@@ -1,16 +1,34 @@
 import {useState} from 'react';
 import './CreateTask.css'
 const CreateTask=(props)=>{
+    console.log(props)
+    let selectedTitle;
+    if(props.taskFunction==='edit')
+    {
+        selectedTitle=props.task.title;
+    }
+    else{
+        selectedTitle='';
+    }
+    const [enteredTask,setEnteredTask]=useState(selectedTitle);
     
-    const [enteredTask,setEnteredTask]=useState(props.title);
     const submitHandler = (event) => {
         event.preventDefault();
         const newTask = {
-          title: enteredTask,
-        };
+            title: enteredTask,
+          };
+        if(props.taskFunction==='edit')
+        {
+            newTask.key=props.task.key;
+            props.onEditList(newTask);
+        }
+      
+        else{
+            props.onCreateList(newTask)
+            setEnteredTask("");
+        }
         console.log(newTask)
-        props.onCreateList(newTask)
-        setEnteredTask("");
+        
       };
     
     const taskChangeHandler=(event)=>{
